@@ -51,9 +51,8 @@ Widget _scaffold() {
       ],
     ),
     bottomNavigationBar: Container(
-      color: Colors.red[600],
+      color: Colors.white,
       child: new TabBar(
-        isScrollable: true,
         tabs: [
           Tab(
             icon: new Icon(Icons.library_books),
@@ -72,12 +71,12 @@ Widget _scaffold() {
             text: "Configurações",
           )
         ],
-        labelColor: Colors.black,
-        unselectedLabelColor: Colors.white,
+        labelColor: Colors.red,
+        unselectedLabelColor: Colors.grey,
         indicatorSize: TabBarIndicatorSize.label,
         indicatorPadding: EdgeInsets.all(5.0),
-        indicatorColor: Colors.black,
-      ),
+/*         indicatorColor: Colors.black,
+ */      ),
     ),
   );
 }

@@ -4,6 +4,8 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart' as crypto;
 import 'package:convert/convert.dart';
 import 'package:toast/toast.dart';
+import 'comic.dart';
+
 
 class Comics extends StatefulWidget {
   @override
@@ -13,15 +15,13 @@ class Comics extends StatefulWidget {
 class _ComicsState extends State<Comics> {
   String _comics;
   String apikey = "f0f9dbea302f60ec236962eadd11af09";
-  int offset = 0;
+  int _offset = 0;
   String _search;
 
   @override
   void initState() {
     super.initState();
-    _getComics().then((map) {
-      print(map);
-    });
+    _getComics();
   }
 
   @override
@@ -43,34 +43,33 @@ class _ComicsState extends State<Comics> {
         ),
         body: Column(
           children: <Widget>[
-           Container(
-             height: 70,
-             child: Padding(
-               padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-               child: TextField(
-                 onSubmitted: (text){
+            Container(
+              height: 70,
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                child: TextField(
+                  onSubmitted: (text) {
                     setState(() {
-                       _search = text;
+                      _search = text;
                     });
-                 },
-                 style: TextStyle(
-                   fontSize: 18,
-                   color: Colors.black,
-                 ),
-                 textAlign: TextAlign.center,
-                 decoration: InputDecoration(
-                   suffixIcon: Icon(
-                     Icons.search,
-                     size: 28.0,
-                   ),
-                   border: OutlineInputBorder(),
-                   labelText: "Pesquise um quadrinho",
-                   labelStyle: TextStyle(color: Colors.black),
-                 ),
-
-               ),
-             ),
-           ),
+                  },
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.black,
+                  ),
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                    suffixIcon: Icon(
+                      Icons.search,
+                      size: 28.0,
+                    ),
+                    border: OutlineInputBorder(),
+                    labelText: "Pesquise um quadrinho",
+                    labelStyle: TextStyle(color: Colors.black),
+                  ),
+                ),
+              ),
+            ),
             Expanded(
               child: FutureBuilder(
                   future: _getComics(),
@@ -96,7 +95,7 @@ class _ComicsState extends State<Comics> {
                           return Container(
                             child: Text("Erro ao carregar os dados!"),
                           );
-                        }else{
+                        } else {
                           return _createComicTable(context, snapshot);
                         }
                     }
@@ -106,7 +105,7 @@ class _ComicsState extends State<Comics> {
         ));
   }
 
-  int _getCount(List data) {
+  int getCount(List data) {
     if (_comics == null || _comics.isEmpty) {
       return data.length;
     } else {
@@ -115,41 +114,43 @@ class _ComicsState extends State<Comics> {
   }
 
   Widget _createComicTable(BuildContext context, AsyncSnapshot snapshot) {
-
     return GridView.builder(
-      padding: EdgeInsets.all(10),
+        padding: EdgeInsets.all(10),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2, crossAxisSpacing: 10.0, mainAxisSpacing: 10),
         itemCount: snapshot.data["data"]["results"].length,
-        itemBuilder: (context, index){
+        itemBuilder: (context, index) {
           //gesture detector serve para deixar a imagem clicavel
           return GestureDetector(
+              onTap: (){
+                   Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Comic()),
+                      );
+              },
             child: Image.network(
               '${snapshot.data["data"]["results"][index]["thumbnail"]["path"]}/portrait_xlarge.${snapshot.data["data"]["results"][index]["thumbnail"]["extension"]}',
               height: 700.0,
               fit: BoxFit.fill,
             ),
           );
-        }
-    
-    );
+        });
   }
 
   Future<Map> _getComics() async {
     http.Response response;
     int timestamp = new DateTime.now().millisecondsSinceEpoch;
-    String temp ="${timestamp}c6d627c0a8fb80a61752e031dd30a4d4d2fafffef0f9dbea302f60ec236962eadd11af09";
+    String temp =
+        "${timestamp}c6d627c0a8fb80a61752e031dd30a4d4d2fafffef0f9dbea302f60ec236962eadd11af09";
     String hash = generateMd5(temp);
     int limit = 20;
 
-
     if (_search == null) {
-     response = await http.get(
-          "https://gateway.marvel.com:443/v1/public/comics?ts=$timestamp&orderBy=title&offset=$offset&apikey=$apikey&limit=$limit&hash=$hash");
+      response = await http.get(
+          "https://gateway.marvel.com:443/v1/public/comics?ts=$timestamp&orderBy=title&offset=$_offset&apikey=$apikey&limit=$limit&hash=$hash");
     } else {
       response = await http.get(
           "https://gateway.marvel.com:443/v1/public/comics?ts=$timestamp&orderBy=title&titleStartsWith=$_search&apikey=$apikey&limit=$limit&hash=$hash");
-
     }
 
     return json.decode(response.body);
@@ -162,10 +163,8 @@ class _ComicsState extends State<Comics> {
     return hex.encode(digest.bytes);
   }
 
-
-
-
   void errorToast() {
-    Toast.show("Erro ao carregar os dados", context, duration: 2, gravity: Toast.BOTTOM);
+    Toast.show("Erro ao carregar os dados", context,
+        duration: 2, gravity: Toast.BOTTOM);
   }
 }

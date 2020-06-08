@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
 
-class Cart extends StatefulWidget {
+class Comic extends StatefulWidget {
   @override
-  _CartState createState() => _CartState();
+  _ComicState createState() => _ComicState();
 }
 
-class _CartState extends State<Cart> {
+class _ComicState extends State<Comic> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.red[500],
         automaticallyImplyLeading: false,
-        title: Text("Carrinho"),
+        title: Text("comic"),
         actions: <Widget>[
+          new FlatButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: new Text('No'),
+          ),
           FlatButton(
             onPressed: () {},
             child: Icon(
