@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'heroes.dart';
-import 'cart.dart';
 import 'settings.dart';
 import 'comics.dart';
 import 'login.dart';
@@ -25,7 +24,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 4,
+      length: 3,
       child: _scaffold(),
     );
   }
@@ -43,9 +42,6 @@ Widget _scaffold() {
           child: Heroes(),
         ),
         new Container(
-          child: Cart(),
-        ),
-        new Container(
           child: Settings(),
         ),
       ],
@@ -61,10 +57,6 @@ Widget _scaffold() {
           Tab(
             icon: new Icon(Icons.people),
             text: "Heróis",
-          ),
-          Tab(
-            icon: new Icon(Icons.shopping_cart),
-            text: "Carrinho",
           ),
           Tab(
             icon: new Icon(Icons.settings),

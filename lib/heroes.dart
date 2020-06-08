@@ -5,7 +5,6 @@ import 'package:convert/convert.dart';
 import 'package:marvelopedia_flutter_app/comic.dart';
 import 'package:toast/toast.dart';
 import 'package:http/http.dart' as http;
-import 'hero.dart';
 
 class Heroes extends StatefulWidget {
   @override
@@ -16,7 +15,7 @@ class _HeroesState extends State<Heroes> {
   String _heroes;
   String apikey = "f0f9dbea302f60ec236962eadd11af09";
   int _offset = 0;
-  String _search;
+  String _search = "";
 
   @override
   void initState() {
@@ -50,9 +49,10 @@ class _HeroesState extends State<Heroes> {
               child: Padding(
                 padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                 child: TextField(
-                  onSubmitted: (text) {
+                  onChanged: (text) {
                     setState(() {
                       _search = text;
+                      _getHeroes();
                     });
                   },
                   style: TextStyle(
@@ -111,16 +111,17 @@ class _HeroesState extends State<Heroes> {
     http.Response response;
     int timestamp = new DateTime.now().millisecondsSinceEpoch;
     String temp =
-        "${timestamp}ebd407c102ea3f1262b8dd370cfa04d4a132a867d8b23f3429d72898aaffd1a321761b4a";
+        "${timestamp}c6d627c0a8fb80a61752e031dd30a4d4d2fafffef0f9dbea302f60ec236962eadd11af09";
     String hash = generateMd5(temp);
+    String apikey = "f0f9dbea302f60ec236962eadd11af09";
     int limit = 20;
 
-    if (_search == null) {
+    if (_search == "") {
       response = await http.get(
-          "https://gateway.marvel.com:443/v1/public/characters?ts=$timestamp&orderBy=title&offset=$_offset&apikey=$apikey&limit=$limit&hash=$hash");
+          "https://gateway.marvel.com:443/v1/public/characters?ts=$timestamp&orderBy=name&offset=$_offset&apikey=$apikey&limit=$limit&hash=$hash");
     } else {
       response = await http.get(
-          "https://gateway.marvel.com:443/v1/public/characters?ts=$timestamp&orderBy=title&titleStartsWith=$_search&apikey=$apikey&limit=$limit&hash=$hash");
+          "https://gateway.marvel.com:443/v1/public/characters?ts=$timestamp&orderBy=name&nameStartsWith=$_search&apikey=$apikey&limit=$limit&hash=$hash");
     }
 
     return json.decode(response.body);

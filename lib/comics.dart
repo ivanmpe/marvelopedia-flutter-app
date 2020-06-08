@@ -6,7 +6,6 @@ import 'package:convert/convert.dart';
 import 'package:toast/toast.dart';
 import 'comic.dart';
 
-
 class Comics extends StatefulWidget {
   @override
   _ComicsState createState() => _ComicsState();
@@ -16,7 +15,7 @@ class _ComicsState extends State<Comics> {
   String _comics;
   String apikey = "f0f9dbea302f60ec236962eadd11af09";
   int _offset = 0;
-  String _search;
+  String _search = "";
 
   @override
   void initState() {
@@ -48,7 +47,7 @@ class _ComicsState extends State<Comics> {
               child: Padding(
                 padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                 child: TextField(
-                  onSubmitted: (text) {
+                  onChanged: (text) {
                     setState(() {
                       _search = text;
                     });
@@ -122,12 +121,12 @@ class _ComicsState extends State<Comics> {
         itemBuilder: (context, index) {
           //gesture detector serve para deixar a imagem clicavel
           return GestureDetector(
-              onTap: (){
-                   Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Comic()),
-                      );
-              },
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Comic(id: snapshot.data["data"]["results"]["index"]["id"])),
+              );
+            },
             child: Image.network(
               '${snapshot.data["data"]["results"][index]["thumbnail"]["path"]}/portrait_xlarge.${snapshot.data["data"]["results"][index]["thumbnail"]["extension"]}',
               height: 700.0,
@@ -145,7 +144,7 @@ class _ComicsState extends State<Comics> {
     String hash = generateMd5(temp);
     int limit = 20;
 
-    if (_search == null) {
+    if (_search == "") {
       response = await http.get(
           "https://gateway.marvel.com:443/v1/public/comics?ts=$timestamp&orderBy=title&offset=$_offset&apikey=$apikey&limit=$limit&hash=$hash");
     } else {

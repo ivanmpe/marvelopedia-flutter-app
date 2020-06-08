@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class Comic extends StatefulWidget {
+  final int id;
+  Comic({Key key, @required this.id}) : super(key: key);
   @override
   _ComicState createState() => _ComicState();
 }
