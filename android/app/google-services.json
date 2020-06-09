@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "923307006090",
+    "firebase_url": "https://marvel-ivan.firebaseio.com",
+    "project_id": "marvel-ivan",
+    "storage_bucket": "marvel-ivan.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:923307006090:android:ac6c0d38f5c4cb28ea3573",
+        "android_client_info": {
+          "package_name": "com.example.marvelopedia_flutter_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "923307006090-lcrkf2s0m34u50757egbdhhsjv0ldurt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.marvelopedia_flutter_app",
+            "certificate_hash": "8ccf37bc24c50e99b9df85280250fa3740bd9f1a"
+          }
+        },
+        {
+          "client_id": "923307006090-uhndapo8o0jfb9lcu6k6m95tp1lkff8u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBO8o6_YZPMdfN8gKlHW4z4nZWVhaGHpf4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "923307006090-uhndapo8o0jfb9lcu6k6m95tp1lkff8u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

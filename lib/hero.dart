@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class Hero extends StatefulWidget {
+  final int id;
+  Hero(this.id);
   @override
   _HeroState createState() => _HeroState();
 }

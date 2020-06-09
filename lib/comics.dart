@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:crypto/crypto.dart' as crypto;
 import 'package:convert/convert.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:toast/toast.dart';
 import 'comic.dart';
 
@@ -75,6 +76,7 @@ class _ComicsState extends State<Comics> {
                   builder: (context, snapshot) {
                     switch (snapshot.connectionState) {
                       case ConnectionState.waiting:
+                        return this._shimmer();
                       case ConnectionState.none:
                         return Container(
                           width: 100,
@@ -122,9 +124,11 @@ class _ComicsState extends State<Comics> {
           //gesture detector serve para deixar a imagem clicavel
           return GestureDetector(
             onTap: () {
+              int id = snapshot.data["data"]["results"][index]["id"];
+
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => Comic(id: snapshot.data["data"]["results"]["index"]["id"])),
+                MaterialPageRoute(builder: (context) => Comic(id: id)),
               );
             },
             child: Image.network(
@@ -137,6 +141,8 @@ class _ComicsState extends State<Comics> {
   }
 
   Future<Map> _getComics() async {
+    await Future.delayed(Duration(seconds: 3));
+
     http.Response response;
     int timestamp = new DateTime.now().millisecondsSinceEpoch;
     String temp =
@@ -145,8 +151,12 @@ class _ComicsState extends State<Comics> {
     int limit = 20;
 
     if (_search == "") {
-      response = await http.get(
-          "https://gateway.marvel.com:443/v1/public/comics?ts=$timestamp&orderBy=title&offset=$_offset&apikey=$apikey&limit=$limit&hash=$hash");
+      response = await http
+          .get(
+              "https://gateway.marvel.com:443/v1/public/comics?ts=$timestamp&orderBy=title&offset=$_offset&apikey=$apikey&limit=$limit&hash=$hash")
+          .catchError((error) {
+        this.errorToast();
+      });
     } else {
       response = await http.get(
           "https://gateway.marvel.com:443/v1/public/comics?ts=$timestamp&orderBy=title&titleStartsWith=$_search&apikey=$apikey&limit=$limit&hash=$hash");
@@ -163,7 +173,46 @@ class _ComicsState extends State<Comics> {
   }
 
   void errorToast() {
-    Toast.show("Erro ao carregar os dados", context,
+    Toast.show("Erro ao carregar os dados. Verifique sua conexão com internet.", context,
         duration: 2, gravity: Toast.BOTTOM);
+  }
+
+  Widget _shimmer() {
+    return GridView.builder(
+        padding: EdgeInsets.all(10),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2, crossAxisSpacing: 10.0, mainAxisSpacing: 10),
+        itemCount: 10,
+        itemBuilder: (context, index) {
+          //gesture detector serve para deixar a imagem clicavel
+          return GestureDetector(
+            child: Shimmer.fromColors(
+              child: Container(
+                height: 700.0,
+                width: 500.0,
+                color: Colors.white,
+              ),
+              baseColor: Colors.grey[400],
+              highlightColor: Colors.white,
+            ),
+          );
+        });
+
+    /* SizedBox(
+      width: 200.0,
+      height: 100.0,
+      child: Shimmer.fromColors(
+        baseColor: Colors.red,
+        highlightColor: Colors.yellow,
+        child: Text(
+          'Shimmer',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 40.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    ); */
   }
 }

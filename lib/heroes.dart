@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:crypto/crypto.dart' as crypto;
 import 'package:convert/convert.dart';
-import 'package:marvelopedia_flutter_app/comic.dart';
 import 'package:toast/toast.dart';
 import 'package:http/http.dart' as http;
+import 'hero.dart';
 
 class Heroes extends StatefulWidget {
   @override
@@ -117,8 +117,12 @@ class _HeroesState extends State<Heroes> {
     int limit = 20;
 
     if (_search == "") {
-      response = await http.get(
-          "https://gateway.marvel.com:443/v1/public/characters?ts=$timestamp&orderBy=name&offset=$_offset&apikey=$apikey&limit=$limit&hash=$hash");
+      try {
+        response = await http.get(
+            "https://gateway.marvel.com:443/v1/public/characters?ts=$timestamp&orderBy=name&offset=$_offset&apikey=$apikey&limit=$limit&hash=$hash");
+      } catch (e) {
+          this.errorToast();
+      }
     } else {
       response = await http.get(
           "https://gateway.marvel.com:443/v1/public/characters?ts=$timestamp&orderBy=name&nameStartsWith=$_search&apikey=$apikey&limit=$limit&hash=$hash");
@@ -136,12 +140,12 @@ class _HeroesState extends State<Heroes> {
         itemBuilder: (context, index) {
           //gesture detector serve para deixar a imagem clicavel
           return GestureDetector(
-              onTap: (){
-                   Navigator.push(
+            onTap: () {
+              /*   Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => Comic()),
-                      );
-              },
+                        MaterialPageRoute(builder: (context) => Hero('kk')),
+                      ); */
+            },
             child: Image.network(
               '${snapshot.data["data"]["results"][index]["thumbnail"]["path"]}/portrait_xlarge.${snapshot.data["data"]["results"][index]["thumbnail"]["extension"]}',
               height: 700.0,
@@ -150,7 +154,6 @@ class _HeroesState extends State<Heroes> {
           );
         });
   }
-
 
   generateMd5(String data) {
     var content = new Utf8Encoder().convert(data);
