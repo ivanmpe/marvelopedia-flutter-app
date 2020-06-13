@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 /* import 'package:http/http.dart' as http;
  */
 import 'main.dart';
@@ -10,6 +11,8 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  bool senhaEscondida = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,8 +24,9 @@ class _LoginState extends State<Login> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Container(
+                width: MediaQuery.of(context).size.width * 0.9,
                 child: Padding(
-                  padding: EdgeInsets.fromLTRB(20, 0, 20, 8),
+                  padding: EdgeInsets.fromLTRB(0, 0, 0, 8),
                   child: TextField(
                     decoration: InputDecoration(
                       prefixIcon: Icon(
@@ -49,21 +53,23 @@ class _LoginState extends State<Login> {
                 ),
               ),
               Container(
+                width: MediaQuery.of(context).size.width * 0.9,
                 child: Padding(
-                  padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                  padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                   child: TextField(
-                    obscureText: true,
+                    obscureText: this.senhaEscondida,
                     maxLines: 1,
                     decoration: InputDecoration(
-                      prefixIcon: Icon(
-                        Icons.enhanced_encryption,
-                        size: 20.0,
-                        color: Colors.red[600],
+                      prefixIcon: IconButton(
+                          icon: FaIcon(FontAwesomeIcons.lock, size: 20,color: Colors.red[600]), onPressed: () {  },
                       ),
-                      suffixIcon:  Icon(
-                        Icons.remove_red_eye,
-                        size: 20.0,
-                        color: Colors.red[600],
+                      suffixIcon: IconButton(
+                        icon: FaIcon( !this.senhaEscondida ? FontAwesomeIcons.eye : FontAwesomeIcons.eyeSlash, size: 20.0, color: Colors.red[600]),
+                        onPressed: () {
+                          setState(() {
+                            this.senhaEscondida = !this.senhaEscondida;
+                          });
+                        },
                       ),
                       filled: true,
                       fillColor: Colors.white,
@@ -84,10 +90,10 @@ class _LoginState extends State<Login> {
                 ),
               ),
               Container(
-                width: 280,
+                width: MediaQuery.of(context).size.width * 0.9,
                 height: 60,
                 child: Padding(
-                  padding: EdgeInsets.fromLTRB(5, 8, 5, 0),
+                  padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
                   child: RaisedButton(
                     shape: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.white, width: 3),
@@ -97,7 +103,7 @@ class _LoginState extends State<Login> {
                     color: Colors.transparent,
                     child: Text(
                       "Entrar",
-                      style: TextStyle(color: Colors.white, fontSize: 24),
+                      style: TextStyle(color: Colors.white, fontSize: 25),
                     ),
                     onPressed: () {
                       Navigator.push(
@@ -114,7 +120,7 @@ class _LoginState extends State<Login> {
       ),
       bottomNavigationBar: Container(
         width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height * 0.08,
+        height: MediaQuery.of(context).size.height * 0.05,
         color: Colors.white,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -143,5 +149,9 @@ class _LoginState extends State<Login> {
         ),
       ),
     );
+  }
+
+  void controlaVisibilidadeSenha() {
+    this.senhaEscondida = !this.senhaEscondida;
   }
 }

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:crypto/crypto.dart' as crypto;
@@ -146,8 +147,8 @@ class _HeroesState extends State<Heroes> {
                         MaterialPageRoute(builder: (context) => Hero('kk')),
                       ); */
             },
-            child: Image.network(
-              '${snapshot.data["data"]["results"][index]["thumbnail"]["path"]}/portrait_xlarge.${snapshot.data["data"]["results"][index]["thumbnail"]["extension"]}',
+            child: CachedNetworkImage(
+              imageUrl: '${snapshot.data["data"]["results"][index]["thumbnail"]["path"]}/portrait_xlarge.${snapshot.data["data"]["results"][index]["thumbnail"]["extension"]}',
               height: 700.0,
               fit: BoxFit.fill,
             ),

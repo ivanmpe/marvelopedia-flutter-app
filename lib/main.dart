@@ -3,15 +3,25 @@ import 'heroes.dart';
 import 'settings.dart';
 import 'comics.dart';
 import 'login.dart';
-
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 void main() => runApp(MaterialApp(
       home: Login(),
       theme: new ThemeData(
-        primaryColor: Colors.red[600], //Changing this will change the color of the TabBar
+        brightness: Brightness.light,
+        primaryColor: Colors.red[600],
         fontFamily: 'Marvel',
-        appBarTheme: AppBarTheme(color: Colors.red[600]),
+        appBarTheme: AppBarTheme(color: Colors.white),
         accentColor: Colors.red[400],
+        backgroundColor: Colors.black
+      ),
+      darkTheme: new ThemeData(
+        primaryColor: Colors.red[600],
+        fontFamily: 'Marvel',
+        appBarTheme: AppBarTheme(color: Colors.white),
+        accentColor: Colors.red[400],
+        backgroundColor: Colors.grey[500],
+        brightness: Brightness.dark,
       ),
     ));
 
@@ -51,15 +61,15 @@ Widget _scaffold() {
       child: new TabBar(
         tabs: [
           Tab(
-            icon: new Icon(Icons.library_books),
+            icon: new FaIcon(FontAwesomeIcons.bookOpen),
             text: "Quadrinhos",
           ),
           Tab(
-            icon: new Icon(Icons.people),
+            icon: new FaIcon(FontAwesomeIcons.mask),
             text: "Heróis",
           ),
           Tab(
-            icon: new Icon(Icons.settings),
+            icon: new FaIcon(FontAwesomeIcons.cog),
             text: "Configurações",
           )
         ],
@@ -68,7 +78,8 @@ Widget _scaffold() {
         indicatorSize: TabBarIndicatorSize.label,
         indicatorPadding: EdgeInsets.all(5.0),
 /*         indicatorColor: Colors.black,
- */      ),
+ */
+      ),
     ),
   );
 }

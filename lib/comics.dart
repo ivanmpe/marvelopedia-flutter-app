@@ -3,9 +3,11 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:crypto/crypto.dart' as crypto;
 import 'package:convert/convert.dart';
+import 'package:marvelopedia_flutter_app/profile.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:toast/toast.dart';
 import 'comic.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class Comics extends StatefulWidget {
   @override
@@ -17,12 +19,43 @@ class _ComicsState extends State<Comics> {
   String apikey = "f0f9dbea302f60ec236962eadd11af09";
   int _offset = 0;
   String _search = "";
+  ScrollController _controller =
+      ScrollController(initialScrollOffset: 0.0, keepScrollOffset: true);
+
+/*   List<String> _data = [];
+  Future<List<String>> _future;
+  ScrollController _controller =
+      ScrollController(initialScrollOffset: 0.0, keepScrollOffset: true); */
 
   @override
   void initState() {
     super.initState();
     _getComics();
+    _controller = new ScrollController(
+      // NEW
+      initialScrollOffset: 0.0, // NEW
+      keepScrollOffset: true, // NEW
+    );
   }
+
+  /*  _ComicsState() {
+    _controller.addListener(() {
+      var isEnd = _controller.offset == _controller.position.maxScrollExtent;
+      if (isEnd)
+        setState(() {
+          _future = loadData();
+        });
+    });
+    _future = loadData();
+  }
+
+  Future<List<String>> loadData() async {
+    for (var i = this._offset; i < this._offset + 20; i++) {
+      _data.add('Data item - $i');
+    }
+    _offset += 20;
+    return _data;
+  } */
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +66,12 @@ class _ComicsState extends State<Comics> {
           backgroundColor: Colors.red[500],
           actions: <Widget>[
             FlatButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Profile()),
+                );
+              },
               child: Icon(
                 Icons.person,
                 color: Colors.white,
@@ -76,7 +114,7 @@ class _ComicsState extends State<Comics> {
                   builder: (context, snapshot) {
                     switch (snapshot.connectionState) {
                       case ConnectionState.waiting:
-                        return this._shimmer();
+                      /* return this._shimmer(); */
                       case ConnectionState.none:
                         return Container(
                           width: 100,
@@ -117,22 +155,24 @@ class _ComicsState extends State<Comics> {
   Widget _createComicTable(BuildContext context, AsyncSnapshot snapshot) {
     return GridView.builder(
         padding: EdgeInsets.all(10),
+        controller: _controller,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, crossAxisSpacing: 10.0, mainAxisSpacing: 10),
+            crossAxisCount: 2, crossAxisSpacing: 5, mainAxisSpacing: 5),
         itemCount: snapshot.data["data"]["results"].length,
         itemBuilder: (context, index) {
           //gesture detector serve para deixar a imagem clicavel
           return GestureDetector(
             onTap: () {
               int id = snapshot.data["data"]["results"][index]["id"];
-
+              String title = snapshot.data["data"]["results"][index]["title"];
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => Comic(id: id)),
+                MaterialPageRoute(builder: (context) => Comic(id: id, title: title )),
               );
             },
-            child: Image.network(
-              '${snapshot.data["data"]["results"][index]["thumbnail"]["path"]}/portrait_xlarge.${snapshot.data["data"]["results"][index]["thumbnail"]["extension"]}',
+            child: CachedNetworkImage(
+              imageUrl:
+                  '${snapshot.data["data"]["results"][index]["thumbnail"]["path"]}/portrait_xlarge.${snapshot.data["data"]["results"][index]["thumbnail"]["extension"]}',
               height: 700.0,
               fit: BoxFit.fill,
             ),
@@ -141,8 +181,6 @@ class _ComicsState extends State<Comics> {
   }
 
   Future<Map> _getComics() async {
-    await Future.delayed(Duration(seconds: 3));
-
     http.Response response;
     int timestamp = new DateTime.now().millisecondsSinceEpoch;
     String temp =
@@ -173,11 +211,22 @@ class _ComicsState extends State<Comics> {
   }
 
   void errorToast() {
-    Toast.show("Erro ao carregar os dados. Verifique sua conexão com internet.", context,
+    Toast.show("Erro ao carregar os dados. Verifique sua conexão com internet.",
+        context,
         duration: 2, gravity: Toast.BOTTOM);
   }
 
-  Widget _shimmer() {
+  void _toEnd() {
+    // NEW
+    _controller.animateTo(
+      // NEW
+      _controller.position.maxScrollExtent, // NEW
+      duration: const Duration(milliseconds: 500), // NEW
+      curve: Curves.ease, // NEW
+    ); // NEW
+  }
+
+  /* Widget _shimmer() {
     return GridView.builder(
         padding: EdgeInsets.all(10),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -197,22 +246,5 @@ class _ComicsState extends State<Comics> {
             ),
           );
         });
-
-    /* SizedBox(
-      width: 200.0,
-      height: 100.0,
-      child: Shimmer.fromColors(
-        baseColor: Colors.red,
-        highlightColor: Colors.yellow,
-        child: Text(
-          'Shimmer',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 40.0,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-    ); */
-  }
+  } */
 }
