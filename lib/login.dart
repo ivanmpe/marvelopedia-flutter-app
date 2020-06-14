@@ -7,7 +7,6 @@ import 'main.dart';
 import 'register.dart';
 
 class Login extends StatefulWidget {
-
   @override
   _LoginState createState() => _LoginState();
 }
@@ -17,7 +16,6 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Colors.red[600],
       body: Center(
@@ -64,10 +62,17 @@ class _LoginState extends State<Login> {
                     maxLines: 1,
                     decoration: InputDecoration(
                       prefixIcon: IconButton(
-                          icon: FaIcon(FontAwesomeIcons.lock, size: 20,color: Colors.red[600]), onPressed: () {  },
+                        icon: FaIcon(FontAwesomeIcons.lock,
+                            size: 20, color: Colors.red[600]),
+                        onPressed: () {},
                       ),
                       suffixIcon: IconButton(
-                        icon: FaIcon( !this.senhaEscondida ? FontAwesomeIcons.eye : FontAwesomeIcons.eyeSlash, size: 20.0, color: Colors.red[600]),
+                        icon: FaIcon(
+                            !this.senhaEscondida
+                                ? FontAwesomeIcons.eye
+                                : FontAwesomeIcons.eyeSlash,
+                            size: 20.0,
+                            color: Colors.red[600]),
                         onPressed: () {
                           setState(() {
                             this.senhaEscondida = !this.senhaEscondida;
@@ -109,8 +114,10 @@ class _LoginState extends State<Login> {
                       style: TextStyle(color: Colors.white, fontSize: 25),
                     ),
                     onPressed: () {
-                      Firestore.instance.collection('books').document()
-                          .setData({ 'title': 'title', 'author': 'author' });
+                      Firestore.instance
+                          .collection('books')
+                          .document()
+                          .setData({'title': 'title', 'author': 'author'});
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => Home()),
@@ -119,6 +126,9 @@ class _LoginState extends State<Login> {
                   ),
                 ),
               ),
+              Container(
+                child: _signInButton(),
+              )
             ],
           ),
         ),
@@ -158,5 +168,35 @@ class _LoginState extends State<Login> {
 
   void controlaVisibilidadeSenha() {
     this.senhaEscondida = !this.senhaEscondida;
+  }
+
+  Widget _signInButton() {
+    return OutlineButton(
+      splashColor: Colors.grey,
+      onPressed: () {},
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+      highlightElevation: 0,
+      borderSide: BorderSide(color: Colors.grey),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Image(image: AssetImage("assets/google_logo.png"), height: 35.0),
+            Padding(
+              padding: const EdgeInsets.only(left: 10),
+              child: Text(
+                'Sign in with Google',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.grey,
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }
