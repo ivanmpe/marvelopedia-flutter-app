@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 /* import 'package:http/http.dart' as http;
@@ -6,6 +7,7 @@ import 'main.dart';
 import 'register.dart';
 
 class Login extends StatefulWidget {
+
   @override
   _LoginState createState() => _LoginState();
 }
@@ -15,6 +17,7 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Colors.red[600],
       body: Center(
@@ -106,6 +109,8 @@ class _LoginState extends State<Login> {
                       style: TextStyle(color: Colors.white, fontSize: 25),
                     ),
                     onPressed: () {
+                      Firestore.instance.collection('books').document()
+                          .setData({ 'title': 'title', 'author': 'author' });
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => Home()),
@@ -120,7 +125,7 @@ class _LoginState extends State<Login> {
       ),
       bottomNavigationBar: Container(
         width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height * 0.05,
+        height: MediaQuery.of(context).size.height * 0.08,
         color: Colors.white,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
