@@ -1,20 +1,29 @@
 import 'package:flutter/material.dart';
 
-class Hero extends StatefulWidget {
+class SuperHero extends StatefulWidget {
   final int id;
-  Hero(this.id);
+  final String title;
+  SuperHero({Key key, @required this.id, @required this.title}) : super(key: key);
   @override
-  _HeroState createState() => _HeroState();
+  _SuperHeroState createState() => _SuperHeroState(this.id, this.title);
 }
 
-class _HeroState extends State<Hero> {
+class _SuperHeroState extends State<SuperHero> {
+  final int id;
+  final String title;
+  _SuperHeroState(this.id, this.title);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.red[500],
         automaticallyImplyLeading: false,
-        title: Text("Hero"),
+        title: Text("SuperHero"),
+        leading: new IconButton(
+          icon: new Icon(Icons.arrow_back),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
         actions: <Widget>[
           new FlatButton(
             onPressed: () => Navigator.of(context).pop(false),

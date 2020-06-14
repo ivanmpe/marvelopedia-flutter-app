@@ -5,7 +5,7 @@ import 'package:crypto/crypto.dart' as crypto;
 import 'package:convert/convert.dart';
 import 'package:toast/toast.dart';
 import 'package:http/http.dart' as http;
-import 'hero.dart';
+import 'super-hero.dart';
 
 class Heroes extends StatefulWidget {
   @override
@@ -13,7 +13,7 @@ class Heroes extends StatefulWidget {
 }
 
 class _HeroesState extends State<Heroes> {
-  String _heroes;
+
   String apikey = "f0f9dbea302f60ec236962eadd11af09";
   int _offset = 0;
   String _search = "";
@@ -122,7 +122,7 @@ class _HeroesState extends State<Heroes> {
         response = await http.get(
             "https://gateway.marvel.com:443/v1/public/characters?ts=$timestamp&orderBy=name&offset=$_offset&apikey=$apikey&limit=$limit&hash=$hash");
       } catch (e) {
-          this.errorToast();
+        this.errorToast();
       }
     } else {
       response = await http.get(
@@ -139,16 +139,18 @@ class _HeroesState extends State<Heroes> {
             crossAxisCount: 2, crossAxisSpacing: 10.0, mainAxisSpacing: 10),
         itemCount: snapshot.data["data"]["results"].length,
         itemBuilder: (context, index) {
-          //gesture detector serve para deixar a imagem clicavel
+          int id = snapshot.data["data"]["results"][index]['id'];
+          String title = snapshot.data["data"]["results"][index]['title'];
           return GestureDetector(
             onTap: () {
-              /*   Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Hero('kk')),
-                      ); */
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SuperHero(id: id, title: title)),
+              );
             },
             child: CachedNetworkImage(
-              imageUrl: '${snapshot.data["data"]["results"][index]["thumbnail"]["path"]}/portrait_xlarge.${snapshot.data["data"]["results"][index]["thumbnail"]["extension"]}',
+              imageUrl:
+                  '${snapshot.data["data"]["results"][index]["thumbnail"]["path"]}/portrait_xlarge.${snapshot.data["data"]["results"][index]["thumbnail"]["extension"]}',
               height: 700.0,
               fit: BoxFit.fill,
             ),

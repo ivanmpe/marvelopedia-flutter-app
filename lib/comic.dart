@@ -8,7 +8,7 @@ import 'package:toast/toast.dart';
 
 class Comic extends StatefulWidget {
   final int id;
-  final String title; 
+  final String title;
   Comic({Key key, @required this.id, @required this.title}) : super(key: key);
 
   @override
@@ -39,6 +39,10 @@ class _ComicState extends State<Comic> {
           backgroundColor: Colors.red[600],
           automaticallyImplyLeading: false,
           title: Text('$title'),
+          leading: new IconButton(
+            icon: new Icon(Icons.arrow_back),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
           elevation: 0.0,
           actions: <Widget>[
             FlatButton(
@@ -59,19 +63,19 @@ class _ComicState extends State<Comic> {
                     switch (snapshot.connectionState) {
                       case ConnectionState.waiting:
                       case ConnectionState.none:
-                       return Align(
-                           alignment: Alignment.center,
-                           child:  Container(
-                          width: 100,
-                          height: 100,
+                        return Align(
                           alignment: Alignment.center,
-                          child: CircularProgressIndicator(
-                            valueColor:
-                                AlwaysStoppedAnimation<Color>(Colors.red[600]),
-                            strokeWidth: 5.0,
+                          child: Container(
+                            width: 100,
+                            height: 100,
+                            alignment: Alignment.center,
+                            child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                  Colors.red[600]),
+                              strokeWidth: 5.0,
+                            ),
                           ),
-                        ),
-                       );
+                        );
                       case ConnectionState.active:
                       case ConnectionState.done:
                       default:
@@ -100,7 +104,7 @@ class _ComicState extends State<Comic> {
                                           )),
                                       Text('$price'),
                                       Text('$description',
-                                       style: TextStyle(
+                                          style: TextStyle(
                                             fontSize: 20,
                                           )),
                                     ],
@@ -125,7 +129,6 @@ class _ComicState extends State<Comic> {
     response = await http.get(url).catchError((error) {
       return false;
     });
-
 
     this.description =
         json.decode(response.body)["data"]["results"][0]["description"];
