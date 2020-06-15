@@ -4,7 +4,7 @@ import 'comics.dart';
 import 'login.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-const PrimaryColorDark = const Color(0xFF151026);
+const PrimaryColorDark = const Color(0x4DFFFFFF);
 
 void main() => runApp(MaterialApp(
       home: Login(),
@@ -15,6 +15,8 @@ void main() => runApp(MaterialApp(
         appBarTheme: AppBarTheme(color: Colors.red[600]),
         accentColor: Colors.white,
         backgroundColor: Colors.black,
+        tabBarTheme: TabBarTheme(
+            labelColor: Colors.red[600], unselectedLabelColor: Colors.grey[500]),
       ),
       darkTheme: ThemeData(
         brightness: Brightness.dark,
@@ -22,7 +24,8 @@ void main() => runApp(MaterialApp(
         accentColor: Colors.white,
         backgroundColor: Colors.grey[500],
         appBarTheme: AppBarTheme(color: PrimaryColorDark),
-        tabBarTheme: TabBarTheme(labelColor: Colors.red[600], unselectedLabelColor: Colors.grey),
+        tabBarTheme: TabBarTheme(
+            labelColor: Colors.white, unselectedLabelColor: Colors.grey[500]),
       ),
     ));
 
