@@ -59,6 +59,9 @@ flutter:
         - asset: fonts/Marvel-Italic.ttf
         - asset: fonts/Marvel-Bold.ttf
           style: italic
+  assets:
+  - assets/google_logo.png
+
 
   # To add assets to your application, add an assets section, like this:
   # assets:

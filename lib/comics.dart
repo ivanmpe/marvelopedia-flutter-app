@@ -3,7 +3,9 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:crypto/crypto.dart' as crypto;
 import 'package:convert/convert.dart';
+import 'package:marvelopedia_flutter_app/api/comic-api.dart';
 import 'package:marvelopedia_flutter_app/profile.dart';
+import 'package:marvelopedia_flutter_app/sign_in.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:toast/toast.dart';
 import 'comic.dart';
@@ -15,47 +17,15 @@ class Comics extends StatefulWidget {
 }
 
 class _ComicsState extends State<Comics> {
-  String _comics;
   String apikey = "f0f9dbea302f60ec236962eadd11af09";
-  int _offset = 0;
-  String _search = "";
   ScrollController _controller =
       ScrollController(initialScrollOffset: 0.0, keepScrollOffset: true);
-
-/*   List<String> _data = [];
-  Future<List<String>> _future;
-  ScrollController _controller =
-      ScrollController(initialScrollOffset: 0.0, keepScrollOffset: true); */
 
   @override
   void initState() {
     super.initState();
-    _getComics();
-    _controller = new ScrollController(
-      // NEW
-      initialScrollOffset: 0.0, // NEW
-      keepScrollOffset: true, // NEW
-    );
+    getComics();
   }
-
-  /*  _ComicsState() {
-    _controller.addListener(() {
-      var isEnd = _controller.offset == _controller.position.maxScrollExtent;
-      if (isEnd)
-        setState(() {
-          _future = loadData();
-        });
-    });
-    _future = loadData();
-  }
-
-  Future<List<String>> loadData() async {
-    for (var i = this._offset; i < this._offset + 20; i++) {
-      _data.add('Data item - $i');
-    }
-    _offset += 20;
-    return _data;
-  } */
 
   @override
   Widget build(BuildContext context) {
@@ -72,23 +42,19 @@ class _ComicsState extends State<Comics> {
                   MaterialPageRoute(builder: (context) => Profile()),
                 );
               },
-              child: Icon(
-                Icons.person,
-                color: Colors.white,
-              ),
+              child: iconProfileAppBar(),
             )
           ],
         ),
         body: Column(
           children: <Widget>[
             Container(
-              height: 70,
               child: Padding(
                 padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                 child: TextField(
                   onChanged: (text) {
                     setState(() {
-                      _search = text;
+                      searchComic = text;
                     });
                   },
                   style: TextStyle(
@@ -110,7 +76,7 @@ class _ComicsState extends State<Comics> {
             ),
             Expanded(
               child: FutureBuilder(
-                  future: _getComics(),
+                  future: getComics(),
                   builder: (context, snapshot) {
                     switch (snapshot.connectionState) {
                       case ConnectionState.waiting:
@@ -118,7 +84,7 @@ class _ComicsState extends State<Comics> {
                       case ConnectionState.none:
                         return Container(
                           width: 100,
-                          height: 100,
+                          height: 130,
                           alignment: Alignment.center,
                           child: CircularProgressIndicator(
                             valueColor:
@@ -144,13 +110,6 @@ class _ComicsState extends State<Comics> {
         ));
   }
 
-  int getCount(List data) {
-    if (_comics == null || _comics.isEmpty) {
-      return data.length;
-    } else {
-      return data.length + 1;
-    }
-  }
 
   Widget _createComicTable(BuildContext context, AsyncSnapshot snapshot) {
     return GridView.builder(
@@ -167,19 +126,19 @@ class _ComicsState extends State<Comics> {
               String title = snapshot.data["data"]["results"][index]["title"];
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => Comic(id: id, title: title )),
+                MaterialPageRoute(
+                    builder: (context) => Comic(id: id, title: title)),
               );
             },
             child: CachedNetworkImage(
               imageUrl:
                   '${snapshot.data["data"]["results"][index]["thumbnail"]["path"]}/portrait_xlarge.${snapshot.data["data"]["results"][index]["thumbnail"]["extension"]}',
-              height: 700.0,
               fit: BoxFit.fill,
             ),
           );
         });
   }
-
+/* 
   Future<Map> _getComics() async {
     http.Response response;
     int timestamp = new DateTime.now().millisecondsSinceEpoch;
@@ -209,7 +168,7 @@ class _ComicsState extends State<Comics> {
     var digest = md5.convert(content);
     return hex.encode(digest.bytes);
   }
-
+ */
   void errorToast() {
     Toast.show("Erro ao carregar os dados. Verifique sua conexão com internet.",
         context,

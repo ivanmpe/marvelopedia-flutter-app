@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:crypto/crypto.dart' as crypto;
 import 'package:convert/convert.dart';
+import 'package:marvelopedia_flutter_app/profile.dart';
+import 'package:marvelopedia_flutter_app/sign_in.dart';
 import 'package:toast/toast.dart';
 import 'package:http/http.dart' as http;
 import 'super-hero.dart';
@@ -13,7 +15,6 @@ class Heroes extends StatefulWidget {
 }
 
 class _HeroesState extends State<Heroes> {
-
   String apikey = "f0f9dbea302f60ec236962eadd11af09";
   int _offset = 0;
   String _search = "";
@@ -35,11 +36,13 @@ class _HeroesState extends State<Heroes> {
           backgroundColor: Colors.red[500],
           actions: <Widget>[
             FlatButton(
-              onPressed: () {},
-              child: Icon(
-                Icons.person,
-                color: Colors.white,
-              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Profile()),
+                );
+              },
+              child: iconProfileAppBar(),
             )
           ],
         ),
@@ -145,7 +148,8 @@ class _HeroesState extends State<Heroes> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => SuperHero(id: id, title: title)),
+                MaterialPageRoute(
+                    builder: (context) => SuperHero(id: id, title: title)),
               );
             },
             child: CachedNetworkImage(

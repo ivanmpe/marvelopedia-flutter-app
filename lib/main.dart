@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'heroes.dart';
-import 'settings.dart';
 import 'comics.dart';
 import 'login.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -34,7 +33,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 2,
       child: _scaffold(),
     );
   }
@@ -51,9 +50,6 @@ Widget _scaffold() {
         new Container(
           child: Heroes(),
         ),
-        new Container(
-          child: Settings(),
-        ),
       ],
     ),
     bottomNavigationBar: Container(
@@ -67,10 +63,6 @@ Widget _scaffold() {
           Tab(
             icon: new FaIcon(FontAwesomeIcons.mask),
             text: "Heróis",
-          ),
-          Tab(
-            icon: new FaIcon(FontAwesomeIcons.cog),
-            text: "Configurações",
           )
         ],
         labelColor: Colors.red,

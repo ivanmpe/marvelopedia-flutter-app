@@ -1,8 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-/* import 'package:http/http.dart' as http;
- */
+import 'package:marvelopedia_flutter_app/sign_in.dart';
 import 'main.dart';
 import 'register.dart';
 
@@ -114,10 +113,6 @@ class _LoginState extends State<Login> {
                       style: TextStyle(color: Colors.white, fontSize: 25),
                     ),
                     onPressed: () {
-                      Firestore.instance
-                          .collection('books')
-                          .document()
-                          .setData({'title': 'title', 'author': 'author'});
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => Home()),
@@ -127,7 +122,12 @@ class _LoginState extends State<Login> {
                 ),
               ),
               Container(
-                child: _signInButton(),
+                width: MediaQuery.of(context).size.width * 0.9,
+                height: 60,
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                  child: _signInButton(),
+                ),
               )
             ],
           ),
@@ -171,19 +171,33 @@ class _LoginState extends State<Login> {
   }
 
   Widget _signInButton() {
-    return OutlineButton(
-      splashColor: Colors.grey,
-      onPressed: () {},
+    return FlatButton(
+      color: Colors.white,
+      onPressed: () {
+        signInWithGoogle().whenComplete(() => {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) {
+                    return Home();
+                  },
+                ),
+              )
+            });
+      },
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
-      highlightElevation: 0,
-      borderSide: BorderSide(color: Colors.grey),
+/*       highlightElevation: 0,
+/*  */      borderSide: BorderSide(color: Colors.grey),
+ */
       child: Padding(
         padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Image(image: AssetImage("assets/google_logo.png"), height: 35.0),
+            Image(
+              image: AssetImage("assets/google_logo.png"),
+              height: 35.0,
+            ),
             Padding(
               padding: const EdgeInsets.only(left: 10),
               child: Text(
