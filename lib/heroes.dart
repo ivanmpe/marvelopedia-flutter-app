@@ -1,12 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'package:crypto/crypto.dart' as crypto;
-import 'package:convert/convert.dart';
 import 'package:marvelopedia_flutter_app/profile.dart';
 import 'package:marvelopedia_flutter_app/sign_in.dart';
 import 'package:toast/toast.dart';
-import 'package:http/http.dart' as http;
+import 'api/super-hero-api.dart';
 import 'super-hero.dart';
 
 class Heroes extends StatefulWidget {
@@ -15,14 +12,11 @@ class Heroes extends StatefulWidget {
 }
 
 class _HeroesState extends State<Heroes> {
-  String apikey = "f0f9dbea302f60ec236962eadd11af09";
-  int _offset = 0;
-  String _search = "";
 
   @override
   void initState() {
     super.initState();
-    _getHeroes().then((map) {
+    getHeroes().then((map) {
       print(map);
     });
   }
@@ -59,8 +53,8 @@ class _HeroesState extends State<Heroes> {
                 child: TextField(
                   onChanged: (text) {
                     setState(() {
-                      _search = text;
-                      _getHeroes();
+                      searchSuperHero = text;
+                      getHeroes();
                     });
                   },
                   style: TextStyle(
@@ -82,7 +76,7 @@ class _HeroesState extends State<Heroes> {
             ),
             Expanded(
               child: FutureBuilder(
-                  future: _getHeroes(),
+                  future: getHeroes(),
                   builder: (context, snapshot) {
                     switch (snapshot.connectionState) {
                       case ConnectionState.waiting:
@@ -115,30 +109,6 @@ class _HeroesState extends State<Heroes> {
         ));
   }
 
-  Future<Map> _getHeroes() async {
-    http.Response response;
-    int timestamp = new DateTime.now().millisecondsSinceEpoch;
-    String temp =
-        "${timestamp}c6d627c0a8fb80a61752e031dd30a4d4d2fafffef0f9dbea302f60ec236962eadd11af09";
-    String hash = generateMd5(temp);
-    String apikey = "f0f9dbea302f60ec236962eadd11af09";
-    int limit = 20;
-
-    if (_search == "") {
-      try {
-        response = await http.get(
-            "https://gateway.marvel.com:443/v1/public/characters?ts=$timestamp&orderBy=name&offset=$_offset&apikey=$apikey&limit=$limit&hash=$hash");
-      } catch (e) {
-        this.errorToast();
-      }
-    } else {
-      response = await http.get(
-          "https://gateway.marvel.com:443/v1/public/characters?ts=$timestamp&orderBy=name&nameStartsWith=$_search&apikey=$apikey&limit=$limit&hash=$hash");
-    }
-
-    return json.decode(response.body);
-  }
-
   Widget _createHeroTable(BuildContext context, AsyncSnapshot snapshot) {
     return GridView.builder(
         padding: EdgeInsets.all(10),
@@ -164,13 +134,6 @@ class _HeroesState extends State<Heroes> {
             ),
           );
         });
-  }
-
-  generateMd5(String data) {
-    var content = new Utf8Encoder().convert(data);
-    var md5 = crypto.md5;
-    var digest = md5.convert(content);
-    return hex.encode(digest.bytes);
   }
 
   void errorToast() {
