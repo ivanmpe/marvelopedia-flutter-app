@@ -11,7 +11,6 @@ class _RegisterState extends State<Register> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red[500],
         title: Text("Cadastro")
       ),
       body: Container(),

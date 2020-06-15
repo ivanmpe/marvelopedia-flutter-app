@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:marvelopedia_flutter_app/api/comic-api.dart';
 import 'package:marvelopedia_flutter_app/profile.dart';
 import 'package:marvelopedia_flutter_app/sign_in.dart';
-import 'package:toast/toast.dart';
 import 'comic.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -25,7 +24,6 @@ class _ComicsState extends State<Comics> {
         appBar: AppBar(
           title: Text("Quadrinhos"),
           automaticallyImplyLeading: false,
-          backgroundColor: Colors.red[500],
           actions: <Widget>[
             FlatButton(
               onPressed: () {
@@ -54,8 +52,7 @@ class _ComicsState extends State<Comics> {
                     });
                   },
                   style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.black,
+                    fontSize: 18,    
                   ),
                   textAlign: TextAlign.center,
                   decoration: InputDecoration(
@@ -65,7 +62,6 @@ class _ComicsState extends State<Comics> {
                     ),
                     border: OutlineInputBorder(),
                     labelText: "Pesquise um quadrinho",
-                    labelStyle: TextStyle(color: Colors.black),
                   ),
                 ),
               ),
@@ -96,7 +92,27 @@ class _ComicsState extends State<Comics> {
                             child: Text("Erro ao carregar os dados!"),
                           );
                         } else {
-                          return _createComicTable(context, snapshot);
+                            if(snapshot.data["data"]["results"].length > 0)
+                                return _createComicTable(context, snapshot);
+
+                           return Padding(
+                               padding: EdgeInsets.all(10),
+                               child: Align(
+                                   alignment: Alignment.center,
+                               child: Column(
+                                   children: <Widget>[
+                                       Text(
+                                           'Não foram encontrados quadrinhos com essa pesquisa. =( ',
+                                           style: TextStyle(
+                                               fontSize: 25,
+                                               fontWeight: FontWeight.bold,
+                                               color: Colors.red[500],
+                                           ),
+                                       )
+                                   ],
+                               ) ,
+                           )
+                           );
                         }
                     }
                   }),

@@ -8,6 +8,8 @@ String imageUrl = '';
 String price = '';
 String searchComic = '';
 int offset = 0;
+String apikey = "f0f9dbea302f60ec236962eadd11af09";
+
 
 generateMd5(String data) {
   var content = new Utf8Encoder().convert(data);
@@ -23,7 +25,7 @@ Future<bool> getComic(int id) async {
       "${timestamp}c6d627c0a8fb80a61752e031dd30a4d4d2fafffef0f9dbea302f60ec236962eadd11af09";
   String hash = generateMd5(temp);
   String url =
-      "https://gateway.marvel.com:443/v1/public/comics/$id?ts=$timestamp&apikey=f0f9dbea302f60ec236962eadd11af09&hash=$hash";
+      "https://gateway.marvel.com:443/v1/public/comics/$id?ts=$timestamp&apikey=$apikey&hash=$hash";
   response = await http.get(url).catchError((error) {
     return false;
   });
@@ -45,7 +47,6 @@ Future<Map> getComics() async {
       "${timestamp}c6d627c0a8fb80a61752e031dd30a4d4d2fafffef0f9dbea302f60ec236962eadd11af09";
   String hash = generateMd5(temp);
   int limit = 20;
-  String apikey = "f0f9dbea302f60ec236962eadd11af09";
 
   if (searchComic == "") {
     response = await http.get(

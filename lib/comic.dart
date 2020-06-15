@@ -27,7 +27,6 @@ class _ComicState extends State<Comic> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.red[600],
           automaticallyImplyLeading: false,
           title: Text('$title'),
           leading: new IconButton(

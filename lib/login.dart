@@ -28,6 +28,9 @@ class _LoginState extends State<Login> {
                 child: Padding(
                   padding: EdgeInsets.fromLTRB(0, 0, 0, 8),
                   child: TextField(
+                      style: TextStyle(
+                          color: Colors.black
+                      )                      ,
                     decoration: InputDecoration(
                       prefixIcon: Icon(
                         Icons.email,
@@ -36,6 +39,7 @@ class _LoginState extends State<Login> {
                       ),
                       filled: true,
                       fillColor: Colors.white,
+                         
                       contentPadding:
                           EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                       hintText: "Email",
@@ -59,6 +63,9 @@ class _LoginState extends State<Login> {
                   child: TextField(
                     obscureText: this.senhaEscondida,
                     maxLines: 1,
+                    style: TextStyle(
+                          color: Colors.black
+                      ),
                     decoration: InputDecoration(
                       prefixIcon: IconButton(
                         icon: FaIcon(FontAwesomeIcons.lock,
@@ -143,7 +150,7 @@ class _LoginState extends State<Login> {
           children: <Widget>[
             Text(
               "Não tem uma conta?",
-              style: TextStyle(fontWeight: FontWeight.w800, fontSize: 15),
+              style: TextStyle(fontWeight: FontWeight.w800, fontSize: 15, color: Colors.black),
             ),
             FlatButton(
               onPressed: () {

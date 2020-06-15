@@ -12,7 +12,6 @@ class Heroes extends StatefulWidget {
 }
 
 class _HeroesState extends State<Heroes> {
-
   @override
   void initState() {
     super.initState();
@@ -27,7 +26,6 @@ class _HeroesState extends State<Heroes> {
         appBar: AppBar(
           title: Text("Heróis"),
           automaticallyImplyLeading: false,
-          backgroundColor: Colors.red[500],
           actions: <Widget>[
             FlatButton(
               onPressed: () {
@@ -36,7 +34,7 @@ class _HeroesState extends State<Heroes> {
                   MaterialPageRoute(builder: (context) => Profile()),
                 );
               },
-              child:Container(
+              child: Container(
                 width: 40,
                 height: 40,
                 child: avatarOrIcon(),
@@ -59,7 +57,6 @@ class _HeroesState extends State<Heroes> {
                   },
                   style: TextStyle(
                     fontSize: 18,
-                    color: Colors.black,
                   ),
                   textAlign: TextAlign.center,
                   decoration: InputDecoration(
@@ -69,7 +66,6 @@ class _HeroesState extends State<Heroes> {
                     ),
                     border: OutlineInputBorder(),
                     labelText: "Pesquise um heróis",
-                    labelStyle: TextStyle(color: Colors.black),
                   ),
                 ),
               ),
@@ -100,7 +96,26 @@ class _HeroesState extends State<Heroes> {
                             child: Text("Erro ao carregar os dados!"),
                           );
                         } else {
-                          return _createHeroTable(context, snapshot);
+                          if (snapshot.data['data']['results'].length > 0)
+                            return _createHeroTable(context, snapshot);
+
+                          return Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: Column(
+                                  children: <Widget>[
+                                    Text(
+                                      'Não foram encontrados heróis com essa pesquisa. =( ',
+                                      style: TextStyle(
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.red[500],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ));
                         }
                     }
                   }),

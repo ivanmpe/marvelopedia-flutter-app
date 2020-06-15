@@ -6,15 +6,13 @@ import 'package:http/http.dart' as http;
 String searchSuperHero = '';
 String apikey = "f0f9dbea302f60ec236962eadd11af09";
 int _offset = 0;
+int limit = 20;
 
 Future<Map> getHeroes() async {
   http.Response response;
   int timestamp = new DateTime.now().millisecondsSinceEpoch;
-  String temp =
-      "${timestamp}c6d627c0a8fb80a61752e031dd30a4d4d2fafffef0f9dbea302f60ec236962eadd11af09";
+  String temp ="${timestamp}c6d627c0a8fb80a61752e031dd30a4d4d2fafffef0f9dbea302f60ec236962eadd11af09";
   String hash = generateMd5(temp);
-  String apikey = "f0f9dbea302f60ec236962eadd11af09";
-  int limit = 20;
 
   if (searchSuperHero == "") {
     try {

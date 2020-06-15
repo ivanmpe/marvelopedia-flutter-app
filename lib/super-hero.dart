@@ -17,7 +17,6 @@ class _SuperHeroState extends State<SuperHero> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red[500],
         automaticallyImplyLeading: false,
         title: Text("SuperHero"),
         leading: new IconButton(
