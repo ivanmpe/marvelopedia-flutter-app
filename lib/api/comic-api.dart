@@ -16,7 +16,7 @@ generateMd5(String data) {
   return hex.encode(digest.bytes);
 }
 
-Future<void> getComic(int id) async {
+Future<bool> getComic(int id) async {
   http.Response response;
   int timestamp = new DateTime.now().millisecondsSinceEpoch;
   String temp =
@@ -35,6 +35,7 @@ Future<void> getComic(int id) async {
       ["extension"];
   imageUrl = '$path.$ext';
   price = json.decode(response.body)["data"]["results"][0]["price"];
+  return true;
 }
 
 Future<Map> getComics() async {
@@ -46,14 +47,36 @@ Future<Map> getComics() async {
   int limit = 20;
   String apikey = "f0f9dbea302f60ec236962eadd11af09";
 
-
   if (searchComic == "") {
-    response = await http
-        .get(
-            "https://gateway.marvel.com:443/v1/public/comics?ts=$timestamp&orderBy=title&offset=$offset&apikey=$apikey&limit=$limit&hash=$hash");
+    response = await http.get(
+        "https://gateway.marvel.com:443/v1/public/comics?ts=$timestamp&orderBy=title&offset=$offset&apikey=$apikey&limit=$limit&hash=$hash");
   } else {
-    response = await http.get("https://gateway.marvel.com:443/v1/public/comics?ts=$timestamp&orderBy=title&titleStartsWith=$searchComic&apikey=$apikey&limit=$limit&hash=$hash");
+    response = await http.get(
+        "https://gateway.marvel.com:443/v1/public/comics?ts=$timestamp&orderBy=title&titleStartsWith=$searchComic&apikey=$apikey&limit=$limit&hash=$hash");
   }
 
   return json.decode(response.body);
 }
+
+
+  /* Widget _shimmer() {
+    return GridView.builder(
+        padding: EdgeInsets.all(10),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2, crossAxisSpacing: 10.0, mainAxisSpacing: 10),
+        itemCount: 10,
+        itemBuilder: (context, index) {
+          //gesture detector serve para deixar a imagem clicavel
+          return GestureDetector(
+            child: Shimmer.fromColors(
+              child: Container(
+                height: 700.0,
+                width: 500.0,
+                color: Colors.white,
+              ),
+              baseColor: Colors.grey[400],
+              highlightColor: Colors.white,
+            ),
+          );
+        });
+  } */

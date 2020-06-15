@@ -42,7 +42,11 @@ class _HeroesState extends State<Heroes> {
                   MaterialPageRoute(builder: (context) => Profile()),
                 );
               },
-              child: iconProfileAppBar(),
+              child:Container(
+                width: 40,
+                height: 40,
+                child: avatarOrIcon(),
+              ),
             )
           ],
         ),

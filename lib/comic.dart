@@ -45,61 +45,65 @@ class _ComicState extends State<Comic> {
             )
           ],
         ),
-        body: Expanded(
-          child: FutureBuilder(
-              future: getComic(id),
-              builder: (context, snapshot) {
-                switch (snapshot.connectionState) {
-                  case ConnectionState.waiting:
-                  case ConnectionState.none:
-                    return Align(
-                      alignment: Alignment.center,
-                      child: Container(
-                        width: 100,
-                        height: 100,
-                        alignment: Alignment.center,
-                        child: CircularProgressIndicator(
-                          valueColor:
-                              AlwaysStoppedAnimation<Color>(Colors.red[600]),
-                          strokeWidth: 5.0,
-                        ),
-                      ),
-                    );
-                  case ConnectionState.active:
-                  case ConnectionState.done:
-                  default:
-                    if (snapshot.hasError) {
-                      errorToast();
-                      return Container(
-                        child: Text("Erro ao carregar os dados!"),
-                      );
-                    } else {
-                      return Padding(
-                          padding: EdgeInsets.all(20),
-                          child: Align(
-                              alignment: Alignment.center,
-                              child: Column(
-                                children: <Widget>[
-                                  CachedNetworkImage(
-                                    imageUrl: imageUrl,
-                                    fit: BoxFit.fill,
-                                    height: MediaQuery.of(context).size.height *
-                                        0.5,
-                                  ),
-                                  Text(title,
-                                      style: TextStyle(
-                                        fontSize: 25,
-                                      )),
-                                  Text(price),
-                                  Text(description,
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                      )),
-                                ],
-                              )));
+        body: Column(
+          children: <Widget>[
+            Expanded(
+              child: FutureBuilder(
+                  future: getComic(id),
+                  builder: (context, snapshot) {
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.waiting:
+                      case ConnectionState.none:
+                        return Align(
+                          alignment: Alignment.center,
+                          child: Container(
+                            width: 100,
+                            height: 100,
+                            alignment: Alignment.center,
+                            child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                  Colors.red[600]),
+                              strokeWidth: 5.0,
+                            ),
+                          ),
+                        );
+                      case ConnectionState.active:
+                      case ConnectionState.done:
+                      default:
+                        if (snapshot.hasError) {
+                          errorToast();
+                          return Container(
+                            child: Text("Erro ao carregar os dados!"),
+                          );
+                        } else {
+                          return Padding(
+                              padding: EdgeInsets.all(20),
+                              child: Align(
+                                  alignment: Alignment.center,
+                                  child: Column(
+                                    children: <Widget>[
+                                      CachedNetworkImage(
+                                        imageUrl: imageUrl,
+                                        fit: BoxFit.fill,
+                                        height: 300,
+                                      ), 
+                                      Text('$title',
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                          )),
+                                      Text('Preço: ', style: TextStyle(fontSize: 20),),
+                                      Text('$price', style: TextStyle(fontSize: 15),),
+                                      Text('$description',
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                          )),
+                                    ],
+                                  )));
+                        }
                     }
-                }
-              }),
+                  }),
+            )
+          ],
         ));
   }
 

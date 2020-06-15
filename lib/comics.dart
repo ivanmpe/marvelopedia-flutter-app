@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:crypto/crypto.dart' as crypto;
-import 'package:convert/convert.dart';
 import 'package:marvelopedia_flutter_app/api/comic-api.dart';
 import 'package:marvelopedia_flutter_app/profile.dart';
 import 'package:marvelopedia_flutter_app/sign_in.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:toast/toast.dart';
 import 'comic.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -17,9 +12,6 @@ class Comics extends StatefulWidget {
 }
 
 class _ComicsState extends State<Comics> {
-  String apikey = "f0f9dbea302f60ec236962eadd11af09";
-  ScrollController _controller =
-      ScrollController(initialScrollOffset: 0.0, keepScrollOffset: true);
 
   @override
   void initState() {
@@ -42,7 +34,11 @@ class _ComicsState extends State<Comics> {
                   MaterialPageRoute(builder: (context) => Profile()),
                 );
               },
-              child: iconProfileAppBar(),
+              child: Container(
+                width: 40,
+                height: 40,
+                child: avatarOrIcon(),
+              ),
             )
           ],
         ),
@@ -96,7 +92,6 @@ class _ComicsState extends State<Comics> {
                       case ConnectionState.done:
                       default:
                         if (snapshot.hasError) {
-                          errorToast();
                           return Container(
                             child: Text("Erro ao carregar os dados!"),
                           );
@@ -110,16 +105,13 @@ class _ComicsState extends State<Comics> {
         ));
   }
 
-
   Widget _createComicTable(BuildContext context, AsyncSnapshot snapshot) {
     return GridView.builder(
         padding: EdgeInsets.all(10),
-        controller: _controller,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2, crossAxisSpacing: 5, mainAxisSpacing: 5),
         itemCount: snapshot.data["data"]["results"].length,
         itemBuilder: (context, index) {
-          //gesture detector serve para deixar a imagem clicavel
           return GestureDetector(
             onTap: () {
               int id = snapshot.data["data"]["results"][index]["id"];
@@ -138,72 +130,4 @@ class _ComicsState extends State<Comics> {
           );
         });
   }
-/* 
-  Future<Map> _getComics() async {
-    http.Response response;
-    int timestamp = new DateTime.now().millisecondsSinceEpoch;
-    String temp =
-        "${timestamp}c6d627c0a8fb80a61752e031dd30a4d4d2fafffef0f9dbea302f60ec236962eadd11af09";
-    String hash = generateMd5(temp);
-    int limit = 20;
-
-    if (_search == "") {
-      response = await http
-          .get(
-              "https://gateway.marvel.com:443/v1/public/comics?ts=$timestamp&orderBy=title&offset=$_offset&apikey=$apikey&limit=$limit&hash=$hash")
-          .catchError((error) {
-        this.errorToast();
-      });
-    } else {
-      response = await http.get(
-          "https://gateway.marvel.com:443/v1/public/comics?ts=$timestamp&orderBy=title&titleStartsWith=$_search&apikey=$apikey&limit=$limit&hash=$hash");
-    }
-
-    return json.decode(response.body);
-  }
-
-  generateMd5(String data) {
-    var content = new Utf8Encoder().convert(data);
-    var md5 = crypto.md5;
-    var digest = md5.convert(content);
-    return hex.encode(digest.bytes);
-  }
- */
-  void errorToast() {
-    Toast.show("Erro ao carregar os dados. Verifique sua conexão com internet.",
-        context,
-        duration: 2, gravity: Toast.BOTTOM);
-  }
-
-  void _toEnd() {
-    // NEW
-    _controller.animateTo(
-      // NEW
-      _controller.position.maxScrollExtent, // NEW
-      duration: const Duration(milliseconds: 500), // NEW
-      curve: Curves.ease, // NEW
-    ); // NEW
-  }
-
-  /* Widget _shimmer() {
-    return GridView.builder(
-        padding: EdgeInsets.all(10),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, crossAxisSpacing: 10.0, mainAxisSpacing: 10),
-        itemCount: 10,
-        itemBuilder: (context, index) {
-          //gesture detector serve para deixar a imagem clicavel
-          return GestureDetector(
-            child: Shimmer.fromColors(
-              child: Container(
-                height: 700.0,
-                width: 500.0,
-                color: Colors.white,
-              ),
-              baseColor: Colors.grey[400],
-              highlightColor: Colors.white,
-            ),
-          );
-        });
-  } */
 }

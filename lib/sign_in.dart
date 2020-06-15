@@ -53,19 +53,16 @@ void signOutGoogle() async {
   print("User Sign Out");
 }
 
-Widget iconProfileAppBar() {
-  if (imageUrl != '')
-    return Container(
-      width: 40,
-      height: 40,
-      child: CircleAvatar(
-        backgroundImage: NetworkImage(
-          imageUrl,
-        ),
-        radius: 60,
-        backgroundColor: Colors.transparent,
+Widget avatarOrIcon() {
+  if ((imageUrl != null) || (imageUrl == "")) {
+    return CircleAvatar(
+      backgroundImage: NetworkImage(
+        imageUrl,
       ),
+      radius: 60,
+      backgroundColor: Colors.transparent,
     );
+  }
 
   return Icon(Icons.person, color: Colors.white);
 }

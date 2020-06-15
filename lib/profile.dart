@@ -61,17 +61,4 @@ class _ProfileState extends State<Profile> {
           ),
         ));
   }
-
-  Widget avatarOrIcon() {
-    if (imageUrl != '') {
-      return CircleAvatar(
-        backgroundImage: NetworkImage(
-          imageUrl,
-        ),
-        radius: 60,
-        backgroundColor: Colors.transparent,
-      );
-    }
-    return Icon(Icons.person, color: Colors.white);
-  }
 }
