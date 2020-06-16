@@ -25,14 +25,12 @@ class _ProfileState extends State<Profile> {
                 '$name',
                 style: TextStyle(
                     fontSize: 25,
-                    color: Colors.black,
                     fontWeight: FontWeight.bold),
               ),
               Text(
                 '$email',
                 style: TextStyle(
                     fontSize: 25,
-                    color: Colors.black,
                     fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 40),

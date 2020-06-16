@@ -132,13 +132,13 @@ class _HeroesState extends State<Heroes> {
         itemCount: snapshot.data["data"]["results"].length,
         itemBuilder: (context, index) {
           int id = snapshot.data["data"]["results"][index]['id'];
-          String title = snapshot.data["data"]["results"][index]['title'];
+          String name = snapshot.data["data"]["results"][index]['name'];
           return GestureDetector(
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => SuperHero(id: id, title: title)),
+                    builder: (context) => SuperHero(id: id, name: name)),
               );
             },
             child: CachedNetworkImage(

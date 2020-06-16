@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:marvelopedia_flutter_app/sign_in.dart';
 import 'package:toast/toast.dart';
 import 'api/comic-api.dart';
 
@@ -37,15 +38,16 @@ class _ComicState extends State<Comic> {
           actions: <Widget>[
             FlatButton(
               onPressed: () {},
-              child: Icon(
-                Icons.person,
-                color: Colors.red[600],
+              child:  Container(
+                width: 40,
+                height: 40,
+                child: avatarOrIcon(),
               ),
             )
           ],
         ),
-        body: Column(
-          children: <Widget>[
+        body: SingleChildScrollView(
+            child:
             Expanded(
               child: FutureBuilder(
                   future: getComic(id),
@@ -82,16 +84,22 @@ class _ComicState extends State<Comic> {
                                   child: Column(
                                     children: <Widget>[
                                       CachedNetworkImage(
-                                        imageUrl: imageUrl,
+                                        imageUrl: comicImageUrl,
                                         fit: BoxFit.fill,
                                         height: 300,
-                                      ), 
+                                      ),
                                       Text('$title',
                                           style: TextStyle(
                                             fontSize: 20,
                                           )),
-                                      Text('Preço: ', style: TextStyle(fontSize: 20),),
-                                      Text('$price', style: TextStyle(fontSize: 15),),
+                                      Text(
+                                        'Preço: ',
+                                        style: TextStyle(fontSize: 20),
+                                      ),
+                                      Text(
+                                        '$price',
+                                        style: TextStyle(fontSize: 15),
+                                      ),
                                       Text('$description',
                                           style: TextStyle(
                                             fontSize: 20,
@@ -102,9 +110,11 @@ class _ComicState extends State<Comic> {
                     }
                   }),
             )
-          ],
+          
         ));
   }
+
+
 
   void errorToast() {
     Toast.show("Erro ao carregar os dados. Verifique sua conexão com internet.",

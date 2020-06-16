@@ -7,11 +7,15 @@ String searchSuperHero = '';
 String apikey = "f0f9dbea302f60ec236962eadd11af09";
 int _offset = 0;
 int limit = 20;
+String heroImageUrl = '';
+String nameHero = '';
+String descriptionHero = '';
 
 Future<Map> getHeroes() async {
   http.Response response;
   int timestamp = new DateTime.now().millisecondsSinceEpoch;
-  String temp ="${timestamp}c6d627c0a8fb80a61752e031dd30a4d4d2fafffef0f9dbea302f60ec236962eadd11af09";
+  String temp =
+      "${timestamp}c6d627c0a8fb80a61752e031dd30a4d4d2fafffef0f9dbea302f60ec236962eadd11af09";
   String hash = generateMd5(temp);
 
   if (searchSuperHero == "") {
@@ -34,4 +38,27 @@ generateMd5(String data) {
   var md5 = crypto.md5;
   var digest = md5.convert(content);
   return hex.encode(digest.bytes);
+}
+
+Future<bool> getHero(int id) async {
+  http.Response response;
+  int timestamp = new DateTime.now().millisecondsSinceEpoch;
+  String temp =
+      "${timestamp}c6d627c0a8fb80a61752e031dd30a4d4d2fafffef0f9dbea302f60ec236962eadd11af09";
+  String hash = generateMd5(temp);
+  String url =
+      "https://gateway.marvel.com:443/v1/public/characters/$id?ts=$timestamp&apikey=$apikey&hash=$hash";
+  response = await http.get(url).catchError((error) {
+    return false;
+  });
+
+  descriptionHero =
+      json.decode(response.body)["data"]["results"][0]["description"];
+  String path =
+      json.decode(response.body)["data"]["results"][0]["thumbnail"]["path"];
+  String ext = json.decode(response.body)["data"]["results"][0]["thumbnail"]
+      ["extension"];
+  heroImageUrl = '$path.$ext';
+  print(json.decode(response.body)["data"]["results"]);
+  return true;
 }

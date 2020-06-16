@@ -4,8 +4,8 @@ import 'dart:convert';
 import 'package:convert/convert.dart';
 
 String description = '';
-String imageUrl = '';
-String price = '';
+String comicImageUrl = '';
+double price = 0;
 String searchComic = '';
 int offset = 0;
 String apikey = "f0f9dbea302f60ec236962eadd11af09";
@@ -35,7 +35,7 @@ Future<bool> getComic(int id) async {
       json.decode(response.body)["data"]["results"][0]["thumbnail"]["path"];
   String ext = json.decode(response.body)["data"]["results"][0]["thumbnail"]
       ["extension"];
-  imageUrl = '$path.$ext';
+  comicImageUrl = '$path.$ext';
   price = json.decode(response.body)["data"]["results"][0]["price"];
   return true;
 }

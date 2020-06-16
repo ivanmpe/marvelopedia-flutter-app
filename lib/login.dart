@@ -23,23 +23,22 @@ class _LoginState extends State<Login> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Container(
-                width: MediaQuery.of(context).size.width * 0.9,
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(0, 0, 0, 8),
+              Padding(
+                padding: EdgeInsets.fromLTRB(0, 0, 0, 8),
+                child: Container(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(40),
+                      color: Colors.white),
                   child: TextField(
-                      style: TextStyle(
-                          color: Colors.black
-                      )                      ,
+                    style: TextStyle(color: Colors.black),
                     decoration: InputDecoration(
+                      hintStyle: TextStyle(fontSize: 20.0, color: Colors.grey),
                       prefixIcon: Icon(
                         Icons.email,
                         size: 20.0,
                         color: Colors.red[600],
                       ),
-                      filled: true,
-                      fillColor: Colors.white,
-                         
                       contentPadding:
                           EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                       hintText: "Email",
@@ -58,56 +57,54 @@ class _LoginState extends State<Login> {
               ),
               Container(
                 width: MediaQuery.of(context).size.width * 0.9,
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                  child: TextField(
-                    obscureText: this.senhaEscondida,
-                    maxLines: 1,
-                    style: TextStyle(
-                          color: Colors.black
-                      ),
-                    decoration: InputDecoration(
-                      prefixIcon: IconButton(
-                        icon: FaIcon(FontAwesomeIcons.lock,
-                            size: 20, color: Colors.red[600]),
-                        onPressed: () {},
-                      ),
-                      suffixIcon: IconButton(
-                        icon: FaIcon(
-                            !this.senhaEscondida
-                                ? FontAwesomeIcons.eye
-                                : FontAwesomeIcons.eyeSlash,
-                            size: 20.0,
-                            color: Colors.red[600]),
-                        onPressed: () {
-                          setState(() {
-                            this.senhaEscondida = !this.senhaEscondida;
-                          });
-                        },
-                      ),
-                      filled: true,
-                      fillColor: Colors.white,
-                      contentPadding:
-                          EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                      hintText: "Password",
-                      labelStyle: TextStyle(color: Colors.black),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
-                        borderRadius: BorderRadius.circular(32.0),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
-                        borderRadius: BorderRadius.circular(32.0),
-                      ),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(40),
+                    color: Colors.white),
+                child: TextField(
+                  obscureText: this.senhaEscondida,
+                  maxLines: 1,
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
+                  decoration: InputDecoration(
+                    hintStyle: TextStyle(fontSize: 20.0, color: Colors.grey),
+                    prefixIcon: IconButton(
+                      icon: FaIcon(FontAwesomeIcons.lock,
+                          size: 20, color: Colors.red[600]),
+                      onPressed: () {},
+                    ),
+                    suffixIcon: IconButton(
+                      icon: FaIcon(
+                          !this.senhaEscondida
+                              ? FontAwesomeIcons.eye
+                              : FontAwesomeIcons.eyeSlash,
+                          size: 20.0,
+                          color: Colors.red[600]),
+                      onPressed: () {
+                        setState(() {
+                          this.senhaEscondida = !this.senhaEscondida;
+                        });
+                      },
+                    ),
+                    contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                    hintText: "Password",
+                    labelStyle: TextStyle(color: Colors.black),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                      borderRadius: BorderRadius.circular(32.0),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(32.0),
+                      borderSide: BorderSide(color: Colors.white),
                     ),
                   ),
                 ),
               ),
-              Container(
-                width: MediaQuery.of(context).size.width * 0.9,
-                height: 60,
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+              Padding(
+                padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                child: Container(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  height: 60,
                   child: RaisedButton(
                     shape: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.white, width: 3),
@@ -150,7 +147,10 @@ class _LoginState extends State<Login> {
           children: <Widget>[
             Text(
               "Não tem uma conta?",
-              style: TextStyle(fontWeight: FontWeight.w800, fontSize: 15, color: Colors.black),
+              style: TextStyle(
+                  fontWeight: FontWeight.w800,
+                  fontSize: 15,
+                  color: Colors.black),
             ),
             FlatButton(
               onPressed: () {
