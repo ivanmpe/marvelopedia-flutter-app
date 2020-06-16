@@ -73,11 +73,13 @@ class _SuperHeroState extends State<SuperHero> {
                               alignment: Alignment.center,
                               child: Column(
                                 children: <Widget>[
-                                  CachedNetworkImage(
+                                 Padding(
+                                    padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
+                                    child: CachedNetworkImage(
                                     imageUrl: heroImageUrl,
                                     fit: BoxFit.fill,
                                     height: 300,
-                                  ),
+                                  )),
                                   Text('$name',
                                       style: TextStyle(
                                         fontSize: 25,

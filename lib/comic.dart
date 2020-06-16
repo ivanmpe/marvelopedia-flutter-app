@@ -38,7 +38,7 @@ class _ComicState extends State<Comic> {
           actions: <Widget>[
             FlatButton(
               onPressed: () {},
-              child:  Container(
+              child: Container(
                 width: 40,
                 height: 40,
                 child: avatarOrIcon(),
@@ -47,74 +47,82 @@ class _ComicState extends State<Comic> {
           ],
         ),
         body: SingleChildScrollView(
-            child:
-            Expanded(
-              child: FutureBuilder(
-                  future: getComic(id),
-                  builder: (context, snapshot) {
-                    switch (snapshot.connectionState) {
-                      case ConnectionState.waiting:
-                      case ConnectionState.none:
-                        return Align(
-                          alignment: Alignment.center,
-                          child: Container(
-                            width: 100,
-                            height: 100,
-                            alignment: Alignment.center,
-                            child: CircularProgressIndicator(
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                  Colors.red[600]),
-                              strokeWidth: 5.0,
-                            ),
-                          ),
-                        );
-                      case ConnectionState.active:
-                      case ConnectionState.done:
-                      default:
-                        if (snapshot.hasError) {
-                          errorToast();
-                          return Container(
-                            child: Text("Erro ao carregar os dados!"),
-                          );
-                        } else {
-                          return Padding(
-                              padding: EdgeInsets.all(20),
-                              child: Align(
-                                  alignment: Alignment.center,
-                                  child: Column(
-                                    children: <Widget>[
-                                      CachedNetworkImage(
-                                        imageUrl: comicImageUrl,
-                                        fit: BoxFit.fill,
-                                        height: 300,
-                                      ),
-                                      Text('$title',
+            child: Expanded(
+          child: FutureBuilder(
+              future: getComic(id),
+              builder: (context, snapshot) {
+                switch (snapshot.connectionState) {
+                  case ConnectionState.waiting:
+                  case ConnectionState.none:
+                    return Align(
+                      alignment: Alignment.center,
+                      child: Container(
+                        width: 100,
+                        height: 100,
+                        alignment: Alignment.center,
+                        child: CircularProgressIndicator(
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.red[600]),
+                          strokeWidth: 5.0,
+                        ),
+                      ),
+                    );
+                  case ConnectionState.active:
+                  case ConnectionState.done:
+                  default:
+                    if (snapshot.hasError) {
+                      errorToast();
+                      return Container(
+                        child: Text("Erro ao carregar os dados!"),
+                      );
+                    } else {
+                      return Padding(
+                          padding: EdgeInsets.all(20),
+                          child: Align(
+                              alignment: Alignment.center,
+                              child: Column(
+                                children: <Widget>[
+                                  CachedNetworkImage(
+                                    imageUrl: comicImageUrl,
+                                    fit: BoxFit.fill,
+                                    height: 300,
+                                  ),
+                                  Padding(
+                                      padding:
+                                          EdgeInsets.fromLTRB(0, 10, 0, 10),
+                                      child: Text('$title',
                                           style: TextStyle(
                                             fontSize: 20,
-                                          )),
-                                      Text(
-                                        'Preço: ',
-                                        style: TextStyle(fontSize: 20),
-                                      ),
-                                      Text(
-                                        '$price',
-                                        style: TextStyle(fontSize: 15),
-                                      ),
-                                      Text('$description',
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                          )),
-                                    ],
-                                  )));
-                        }
+                                          ))),
+                                  priceNotNull(),
+                                  descriptionNotNull(),
+                                ],
+                              )));
                     }
-                  }),
-            )
-          
-        ));
+                }
+              }),
+        )));
   }
 
+  Widget priceNotNull() {
+    if (price != null)
+      return Text(
+        'Preço: $price',
+        style: TextStyle(fontSize: 15),
+      );
 
+    return Container();
+  }
+
+  Widget descriptionNotNull() {
+    if (description != null)
+      return Text('$description',
+          style: TextStyle(
+            fontSize: 20,
+          ));
+
+    return Container();
+  }
 
   void errorToast() {
     Toast.show("Erro ao carregar os dados. Verifique sua conexão com internet.",
