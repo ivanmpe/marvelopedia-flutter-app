@@ -1,9 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:marvelopedia_flutter_app/profile.dart';
-import 'package:marvelopedia_flutter_app/sign_in.dart';
+import 'package:marvelopedia_flutter_app/api/super-hero-api.dart';
+import 'package:marvelopedia_flutter_app/screens/profile.dart';
+import 'package:marvelopedia_flutter_app/screens/sign_in.dart';
 import 'package:toast/toast.dart';
-import 'api/super-hero-api.dart';
 import 'super-hero.dart';
 
 class Heroes extends StatefulWidget {

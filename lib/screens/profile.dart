@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:marvelopedia_flutter_app/sign_in.dart';
+import 'package:marvelopedia_flutter_app/screens/sign_in.dart';
 
 import 'login.dart';
 

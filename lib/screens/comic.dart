@@ -1,47 +1,55 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:marvelopedia_flutter_app/sign_in.dart';
+import 'package:marvelopedia_flutter_app/api/comic-api.dart';
+import 'package:marvelopedia_flutter_app/screens/sign_in.dart';
+import 'package:toast/toast.dart';
 
-import 'api/super-hero-api.dart';
-
-class SuperHero extends StatefulWidget {
+class Comic extends StatefulWidget {
   final int id;
-  final String name;
-  SuperHero({Key key, @required this.id, @required this.name})
-      : super(key: key);
+  final String title;
+  Comic({Key key, @required this.id, @required this.title}) : super(key: key);
+
   @override
-  _SuperHeroState createState() => _SuperHeroState(this.id, this.name);
+  _ComicState createState() => _ComicState(this.id, this.title);
 }
 
-class _SuperHeroState extends State<SuperHero> {
-  final int id;
-  final String name;
-  _SuperHeroState(this.id, this.name);
+class _ComicState extends State<Comic> {
+  String title;
+  int id;
+  _ComicState(this.id, this.title);
+
+  @override
+  void initState() {
+    super.initState();
+    getComic(id);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          title: Text(this.name),
+          title: Text('$title'),
           leading: new IconButton(
             icon: new Icon(Icons.arrow_back),
             onPressed: () => Navigator.of(context).pop(),
           ),
+          elevation: 0.0,
           actions: <Widget>[
             FlatButton(
-                onPressed: () {},
-                child: Container(
-                  height: 40,
-                  width: 40,
-                  child: avatarOrIcon(),
-                ))
+              onPressed: () {},
+              child: Container(
+                width: 40,
+                height: 40,
+                child: avatarOrIcon(),
+              ),
+            )
           ],
         ),
         body: SingleChildScrollView(
-        child: Container(
+            child: Expanded(
           child: FutureBuilder(
-              future: getHero(id),
+              future: getComic(id),
               builder: (context, snapshot) {
                 switch (snapshot.connectionState) {
                   case ConnectionState.waiting:
@@ -63,6 +71,7 @@ class _SuperHeroState extends State<SuperHero> {
                   case ConnectionState.done:
                   default:
                     if (snapshot.hasError) {
+                      errorToast();
                       return Container(
                         child: Text("Erro ao carregar os dados!"),
                       );
@@ -73,26 +82,51 @@ class _SuperHeroState extends State<SuperHero> {
                               alignment: Alignment.center,
                               child: Column(
                                 children: <Widget>[
-                                 Padding(
-                                    padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
-                                    child: CachedNetworkImage(
-                                    imageUrl: heroImageUrl,
+                                  CachedNetworkImage(
+                                    imageUrl: comicImageUrl,
                                     fit: BoxFit.fill,
                                     height: 300,
-                                  )),
-                                  Text('$name',
-                                      style: TextStyle(
-                                        fontSize: 25,
-                                      )),
-                                  Text('$descriptionHero',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                      )),
+                                  ),
+                                  Padding(
+                                      padding:
+                                          EdgeInsets.fromLTRB(0, 10, 0, 10),
+                                      child: Text('$title',
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                          ))),
+                                  priceNotNull(),
+                                  descriptionNotNull(),
                                 ],
                               )));
                     }
                 }
               }),
         )));
+  }
+
+  Widget priceNotNull() {
+    if (price != null)
+      return Text(
+        'Preço: $price',
+        style: TextStyle(fontSize: 15),
+      );
+
+    return Container();
+  }
+
+  Widget descriptionNotNull() {
+    if (description != null)
+      return Text('$description',
+          style: TextStyle(
+            fontSize: 20,
+          ));
+
+    return Container();
+  }
+
+  void errorToast() {
+    Toast.show("Erro ao carregar os dados. Verifique sua conexão com internet.",
+        context,
+        duration: 2, gravity: Toast.BOTTOM);
   }
 }

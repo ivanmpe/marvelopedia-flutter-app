@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:marvelopedia_flutter_app/sign_in.dart';
-import 'main.dart';
+import 'package:marvelopedia_flutter_app/screens/sign_in.dart';
+import 'package:marvelopedia_flutter_app/screens/tabs.dart';
 import 'register.dart';
 
 class Login extends StatefulWidget {
@@ -118,7 +118,7 @@ class _LoginState extends State<Login> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => Home()),
+                        MaterialPageRoute(builder: (context) => Tabs()),
                       );
                     },
                   ),
@@ -184,7 +184,7 @@ class _LoginState extends State<Login> {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) {
-                    return Home();
+                    return Tabs();
                   },
                 ),
               )

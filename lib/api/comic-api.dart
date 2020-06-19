@@ -59,7 +59,6 @@ Future<Map> getComics() async {
   return json.decode(response.body);
 }
 
-
   /* Widget _shimmer() {
     return GridView.builder(
         padding: EdgeInsets.all(10),

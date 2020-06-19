@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:marvelopedia_flutter_app/api/comic-api.dart';
-import 'package:marvelopedia_flutter_app/profile.dart';
-import 'package:marvelopedia_flutter_app/sign_in.dart';
+import 'package:marvelopedia_flutter_app/screens/profile.dart';
+import 'package:marvelopedia_flutter_app/screens/sign_in.dart';
 import 'comic.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -72,7 +72,6 @@ class _ComicsState extends State<Comics> {
                   builder: (context, snapshot) {
                     switch (snapshot.connectionState) {
                       case ConnectionState.waiting:
-                      /* return this._shimmer(); */
                       case ConnectionState.none:
                         return Container(
                           width: 100,

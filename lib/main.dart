@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'heroes.dart';
-import 'comics.dart';
-import 'login.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:marvelopedia_flutter_app/screens/login.dart';
 
 const PrimaryColorDark = const Color(0x4DFFFFFF);
 
@@ -29,48 +26,3 @@ void main() => runApp(MaterialApp(
       ),
     ));
 
-class Home extends StatefulWidget {
-  @override
-  _HomeState createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
-  @override
-  Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: _scaffold(),
-    );
-  }
-}
-
-Widget _scaffold() {
-  return Scaffold(
-    body: TabBarView(
-      children: [
-        new Container(
-          child: Comics(),
-        ),
-        new Container(
-          child: Heroes(),
-        ),
-      ],
-    ),
-    bottomNavigationBar: Container(
-      child: new TabBar(
-        tabs: [
-          Tab(
-            icon: new FaIcon(FontAwesomeIcons.bookOpen),
-          ),
-          Tab(
-            icon: new FaIcon(FontAwesomeIcons.mask),
-          )
-        ],
-        unselectedLabelColor: Colors.grey,
-        indicatorSize: TabBarIndicatorSize.label,
-        indicatorPadding: EdgeInsets.all(5.0),
-        indicatorColor: Colors.black,
-      ),
-    ),
-  );
-}
